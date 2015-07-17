@@ -69,5 +69,31 @@ str(pa_data)
 ##$ steps   : int  NA NA NA NA NA NA NA NA NA NA ...
 ##$ date    : chr  "2012-10-01" "2012-10-01" "2012-10-01" "2012-10-01" ...
 ##$ interval: int  0 5 10 15 20 25 30 35 40 45 ...
+
+
 ##Conversion de date a formato fecha (no hace falta indicar formato en la función)
 pa_data_clean$date <- as.Date(pa_data_clean$date)
+
+library(dplyr)
+pa_data_clean_by_date <- group_by(pa_data_clean, date)
+total_steps_by_date <- summarise(pa_data_clean_by_date, total_steps =sum(steps,na.rm = TRUE))
+hist(total_steps_by_date$total_steps)
+summary(total_steps_by_date)
+##date             total_steps   
+##Min.   :2012-10-02   Min.   :   41  
+##1st Qu.:2012-10-16   1st Qu.: 8841  
+##Median :2012-10-29   Median :10765  
+##Mean   :2012-10-30   Mean   :10766  
+##3rd Qu.:2012-11-16   3rd Qu.:13294  
+##Max.   :2012-11-29   Max.   :21194  
+mean(total_steps_by_date$total_steps)
+##[1] 10766.19
+median(total_steps_by_date$total_steps)
+##[1] 10766.19
+quantile(total_steps_by_date$total_steps)
+##0%   25%   50%   75%  100% 
+##41  8841 10765 13294 21194 [1] 10766.19
+
+hist(total_steps_by_date$total_steps, breaks=25)
+pa_data_clean_by_interval <- group_by(pa_data_clean, interval)
+
